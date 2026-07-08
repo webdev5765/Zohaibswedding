@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Gift for the Newlyweds 💛</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Karla:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green:#0e4a41;
+    --green-deep:#093630;
+    --gold:#c9a24b;
+    --gold-soft:#e6cf94;
+    --ivory:#fdf9f0;
+    --rose:#d97b8a;
+    --ink:#2a2a26;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    font-family:'Karla',sans-serif;
+    background:radial-gradient(ellipse at 50% 0%, #135c51 0%, var(--green) 45%, var(--green-deep) 100%);
+    color:var(--ivory);
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px 16px 48px;
+    overflow-x:hidden;
+  }
+  .stage{width:100%;max-width:560px;text-align:center;position:relative;}
+
+  /* ---------- floating petals ---------- */
+  .petal{
+    position:fixed;top:-30px;font-size:18px;opacity:.7;
+    animation:fall linear infinite;pointer-events:none;z-index:1;
+  }
+  @keyframes fall{
+    to{transform:translateY(110vh) rotate(340deg);}
+  }
+
+  /* ---------- envelope ---------- */
+  .env-wrap{position:relative;z-index:2;}
+  .env-hint{
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;font-size:1.35rem;color:var(--gold-soft);
+    margin-bottom:22px;letter-spacing:.03em;
+  }
+  .envelope{
+    position:relative;width:min(340px,88vw);height:230px;margin:0 auto;
+    cursor:pointer;border:none;background:none;padding:0;
+    -webkit-tap-highlight-color:transparent;
+    transition:transform .25s ease;
+  }
+  .envelope:hover{transform:translateY(-4px);}
+  .envelope:focus-visible{outline:3px solid var(--gold);outline-offset:8px;border-radius:8px;}
+  .env-body{
+    position:absolute;inset:0;background:linear-gradient(160deg,#f7efdc,#ecdfc2);
+    border-radius:10px;box-shadow:0 18px 50px rgba(0,0,0,.4);
+  }
+  .env-flap{
+    position:absolute;top:0;left:0;width:100%;height:55%;
+    background:linear-gradient(180deg,#efe3c6,#e2d2ac);
+    clip-path:polygon(0 0,100% 0,50% 100%);
+    transform-origin:top center;
+    transition:transform .8s cubic-bezier(.6,0,.3,1);
+    border-radius:10px 10px 0 0;z-index:4;
+  }
+  .env-seal{
+    position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);
+    width:62px;height:62px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%,#e0b862,var(--gold) 60%,#a6813a);
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.5rem;z-index:5;
+    box-shadow:0 4px 14px rgba(0,0,0,.3);
+    transition:transform .5s ease,opacity .5s ease;
+    animation:pulse 2.2s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%,100%{box-shadow:0 4px 14px rgba(0,0,0,.3),0 0 0 0 rgba(201,162,75,.55);}
+    50%{box-shadow:0 4px 14px rgba(0,0,0,.3),0 0 0 16px rgba(201,162,75,0);}
+  }
+  .env-letter{
+    position:absolute;left:6%;top:8%;width:88%;height:84%;
+    background:var(--ivory);border-radius:6px;z-index:3;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Cormorant Garamond',serif;color:var(--green);
+    font-size:1.2rem;font-style:italic;
+    transition:transform .8s cubic-bezier(.6,0,.3,1) .3s;
+  }
+  .envelope.open .env-flap{transform:rotateX(180deg);}
+  .envelope.open .env-seal{transform:translate(-50%,-50%) scale(0);opacity:0;animation:none;}
+  .envelope.open .env-letter{transform:translateY(-46%);}
+  .env-wrap.away{
+    animation:envAway .7s ease forwards;
+  }
+  @keyframes envAway{
+    to{opacity:0;transform:translateY(-40px) scale(.92);visibility:hidden;}
+  }
+
+  /* ---------- the card ---------- */
+  .card{
+    display:none;opacity:0;transform:translateY(30px);
+    position:relative;z-index:2;
+  }
+  .card.show{display:block;animation:cardIn .8s ease .15s forwards;}
+  @keyframes cardIn{to{opacity:1;transform:translateY(0);}}
+
+  .eyebrow{
+    font-size:.72rem;letter-spacing:.32em;text-transform:uppercase;
+    color:var(--gold-soft);margin-bottom:14px;
+  }
+  h1{
+    font-family:'Cormorant Garamond',serif;font-weight:600;
+    font-size:clamp(2.1rem,7vw,2.9rem);line-height:1.12;
+    margin-bottom:6px;
+  }
+  h1 em{font-style:italic;color:var(--gold-soft);}
+  .note{
+    font-family:'Cormorant Garamond',serif;font-style:italic;
+    font-size:1.22rem;line-height:1.55;color:#f3ecd9;
+    max-width:420px;margin:16px auto 8px;
+  }
+  .divider{
+    display:flex;align-items:center;gap:12px;justify-content:center;
+    margin:22px auto;color:var(--gold);
+  }
+  .divider::before,.divider::after{
+    content:"";height:1px;width:70px;background:linear-gradient(90deg,transparent,var(--gold));
+  }
+  .divider::after{background:linear-gradient(90deg,var(--gold),transparent);}
+  .pick-label{
+    font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--gold-soft);margin-bottom:16px;
+  }
+
+  /* ---------- key cards ---------- */
+  .options{display:flex;flex-direction:column;gap:14px;margin:0 auto;max-width:420px;}
+  .key{
+    position:relative;display:flex;align-items:center;gap:16px;
+    background:linear-gradient(135deg,#fdf9f0 0%,#f3e9d2 100%);
+    color:var(--ink);border:2px solid transparent;border-radius:14px;
+    padding:16px 18px;cursor:pointer;text-align:left;
+    font-family:'Karla',sans-serif;width:100%;
+    transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .key:hover{transform:translateY(-3px);box-shadow:0 10px 26px rgba(0,0,0,.3);}
+  .key:focus-visible{outline:3px solid var(--gold);outline-offset:3px;}
+  .key::before{
+    content:"";position:absolute;left:0;top:0;bottom:0;width:8px;
+    border-radius:14px 0 0 14px;background:var(--gold);opacity:.85;
+  }
+  .key .emoji{font-size:1.7rem;margin-left:6px;}
+  .key .info{flex:1;}
+  .key .city{
+    font-family:'Cormorant Garamond',serif;font-weight:600;
+    font-size:1.35rem;color:var(--green);line-height:1.1;
+  }
+  .key .date{font-size:.9rem;color:#6b6455;margin-top:2px;font-weight:500;}
+  .key .days{
+    font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+    background:var(--green);color:var(--gold-soft);
+    padding:5px 10px;border-radius:999px;white-space:nowrap;
+  }
+  .key .check{
+    width:26px;height:26px;border-radius:50%;border:2px solid #cbbd9a;
+    display:flex;align-items:center;justify-content:center;
+    font-size:.85rem;color:transparent;transition:all .2s ease;flex-shrink:0;
+  }
+  .key.selected{
+    border-color:var(--gold);
+    box-shadow:0 0 0 4px rgba(201,162,75,.25),0 12px 30px rgba(0,0,0,.35);
+    transform:translateY(-3px);
+  }
+  .key.selected .check{background:var(--green);border-color:var(--green);color:var(--gold-soft);}
+
+  /* ---------- urgency ribbon ---------- */
+  .urgent{
+    margin:26px auto 0;max-width:420px;
+    background:rgba(217,123,138,.14);
+    border:1px dashed var(--rose);
+    border-radius:12px;padding:14px 18px;
+    font-size:.92rem;line-height:1.5;color:#ffdfe5;
+  }
+  .urgent strong{color:#ffc4cf;}
+  .urgent .bell{display:inline-block;animation:ring 2.4s ease-in-out infinite;transform-origin:top center;}
+  @keyframes ring{
+    0%,70%,100%{transform:rotate(0);}
+    75%{transform:rotate(14deg);}80%{transform:rotate(-12deg);}
+    85%{transform:rotate(9deg);}90%{transform:rotate(-6deg);}95%{transform:rotate(3deg);}
+  }
+
+  /* ---------- confirm ---------- */
+  .confirm{
+    display:none;margin:22px auto 0;max-width:420px;
+    background:rgba(253,249,240,.08);border:1px solid rgba(201,162,75,.5);
+    border-radius:14px;padding:20px;
+  }
+  .confirm.show{display:block;animation:cardIn .5s ease forwards;opacity:0;transform:translateY(14px);}
+  .confirm p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.15rem;margin-bottom:14px;}
+  .confirm p span{color:var(--gold-soft);font-weight:600;}
+  .copy-btn{
+    font-family:'Karla',sans-serif;font-weight:700;font-size:.95rem;
+    letter-spacing:.04em;color:var(--green-deep);
+    background:linear-gradient(135deg,var(--gold-soft),var(--gold));
+    border:none;border-radius:999px;padding:13px 26px;cursor:pointer;
+    transition:transform .15s ease,box-shadow .15s ease;
+    box-shadow:0 6px 18px rgba(0,0,0,.3);
+  }
+  .copy-btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.35);}
+  .copy-btn:focus-visible{outline:3px solid var(--ivory);outline-offset:3px;}
+  .footer-note{
+    margin-top:26px;font-size:.78rem;color:rgba(253,249,240,.55);
+    font-style:italic;
+  }
+
+  /* ---------- confetti ---------- */
+  .confetti{position:fixed;pointer-events:none;font-size:20px;z-index:50;animation:confetti .9s ease-out forwards;}
+  @keyframes confetti{
+    to{transform:translate(var(--dx),var(--dy)) rotate(var(--rot));opacity:0;}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}
+    .petal,.confetti{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="stage">
+
+  <!-- ENVELOPE -->
+  <div class="env-wrap" id="envWrap">
+    <p class="env-hint">Something special is waiting for you two…</p>
+    <button class="envelope" id="envelope" aria-label="Open your gift">
+      <div class="env-letter">tap the seal ✨</div>
+      <div class="env-body"></div>
+      <div class="env-flap"></div>
+      <div class="env-seal">💍</div>
+    </button>
+  </div>
+
+  <!-- CARD -->
+  <main class="card" id="card" aria-live="polite">
+    <h1>A night away,<br><em>reserved for the two of you</em></h1>
+    <p class="note">
+      Congratulations, Zohaib and Aroofa. As you begin this new chapter
+      together, I wanted to give you both a quiet moment to simply be
+      married — away from the guests, the errands, and the noise. The room
+      is my gift. The evening is yours.
+    </p>
+
+    <div class="divider">❦</div>
+
+    <p class="pick-label">Pick your night — I'll book it</p>
+
+    <div class="options" role="radiogroup" aria-label="Choose your hotel night">
+      <button class="key" role="radio" aria-checked="false" data-choice="Tuesday, August 25 — Karachi">
+        <span class="emoji">🌊</span>
+        <span class="info">
+          <span class="city">Karachi</span>
+          <span class="date">Tuesday, August 25</span>
+        </span>
+        <span class="days" data-date="2026-08-25"></span>
+        <span class="check">✓</span>
+      </button>
+
+      <button class="key" role="radio" aria-checked="false" data-choice="Sunday, August 30 — Islamabad">
+        <span class="emoji">⛰️</span>
+        <span class="info">
+          <span class="city">Islamabad</span>
+          <span class="date">Sunday, August 30</span>
+        </span>
+        <span class="days" data-date="2026-08-30"></span>
+        <span class="check">✓</span>
+      </button>
+
+      <button class="key" role="radio" aria-checked="false" data-choice="Sunday, September 6 — Karachi">
+        <span class="emoji">🌆</span>
+        <span class="info">
+          <span class="city">Karachi</span>
+          <span class="date">Sunday, September 6</span>
+        </span>
+        <span class="days" data-date="2026-09-06"></span>
+        <span class="check">✓</span>
+      </button>
+    </div>
+
+    <div class="urgent">
+      <span class="bell">🔔</span> <strong>A small request:</strong> good rooms
+      tend to book quickly, so please let me know your choice
+      <strong>at your earliest convenience</strong> — this week, if possible —
+      so I can confirm the reservation in time.
+    </div>
+
+    <div class="confirm" id="confirm">
+      <p>A fine choice — <span id="choiceText"></span></p>
+      <button class="copy-btn" id="copyBtn">Copy my pick &amp; send it over</button>
+    </div>
+
+    <p class="footer-note">With love — now, go enjoy an evening that belongs to no one but you two.</p>
+  </main>
+</div>
+
+<script>
+  // floating petals
+  (function(){
+    const symbols = ["🌸","✿","❀","🌼"];
+    for (let i = 0; i < 10; i++){
+      const p = document.createElement("span");
+      p.className = "petal";
+      p.textContent = symbols[i % symbols.length];
+      p.style.left = Math.random()*100 + "vw";
+      p.style.animationDuration = (9 + Math.random()*9) + "s";
+      p.style.animationDelay = (Math.random()*10) + "s";
+      p.style.fontSize = (13 + Math.random()*11) + "px";
+      document.body.appendChild(p);
+    }
+  })();
+
+  // countdown badges
+  document.querySelectorAll(".days").forEach(el => {
+    const target = new Date(el.dataset.date + "T00:00:00");
+    const days = Math.max(0, Math.ceil((target - new Date()) / 86400000));
+    el.textContent = "in " + days + " days";
+  });
+
+  // envelope opening
+  const envelope = document.getElementById("envelope");
+  const envWrap = document.getElementById("envWrap");
+  const card = document.getElementById("card");
+  envelope.addEventListener("click", () => {
+    if (envelope.classList.contains("open")) return;
+    envelope.classList.add("open");
+    setTimeout(() => {
+      envWrap.classList.add("away");
+      card.classList.add("show");
+    }, 900);
+  });
+
+  // option selection
+  const keys = document.querySelectorAll(".key");
+  const confirmBox = document.getElementById("confirm");
+  const choiceText = document.getElementById("choiceText");
+  let currentChoice = "";
+
+  keys.forEach(key => {
+    key.addEventListener("click", () => {
+      keys.forEach(k => { k.classList.remove("selected"); k.setAttribute("aria-checked","false"); });
+      key.classList.add("selected");
+      key.setAttribute("aria-checked","true");
+      currentChoice = key.dataset.choice;
+      choiceText.textContent = currentChoice;
+      confirmBox.classList.add("show");
+      burst(key);
+    });
+  });
+
+  // confetti burst
+  function burst(fromEl){
+    const rect = fromEl.getBoundingClientRect();
+    const cx = rect.left + rect.width/2, cy = rect.top + rect.height/2;
+    const bits = ["✨","💛","🎊","🥂","💚"];
+    for (let i = 0; i < 14; i++){
+      const b = document.createElement("span");
+      b.className = "confetti";
+      b.textContent = bits[i % bits.length];
+      b.style.left = cx + "px"; b.style.top = cy + "px";
+      b.style.setProperty("--dx", (Math.random()*220 - 110) + "px");
+      b.style.setProperty("--dy", (Math.random()*-180 - 40) + "px");
+      b.style.setProperty("--rot", (Math.random()*360 - 180) + "deg");
+      document.body.appendChild(b);
+      setTimeout(() => b.remove(), 1000);
+    }
+  }
+
+  // copy choice
+  const copyBtn = document.getElementById("copyBtn");
+  copyBtn.addEventListener("click", async () => {
+    const msg = "My choice: " + currentChoice + " — please go ahead and book it.";
+    try {
+      await navigator.clipboard.writeText(msg);
+      copyBtn.textContent = "Copied — now send it my way";
+    } catch(e) {
+      copyBtn.textContent = msg;
+    }
+    setTimeout(() => { copyBtn.innerHTML = "Copy my pick &amp; send it over"; }, 2600);
+  });
+</script>
+</body>
+</html>
